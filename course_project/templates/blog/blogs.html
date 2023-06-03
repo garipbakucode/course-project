@@ -1,0 +1,188 @@
+{% extends 'base/index.html' %}
+{% load static helper %}
+
+{% block content %}
+        <!-- Page Banner Start -->
+        <section class="page-banner-area rel z-1 text-white text-center" style="background-image: url(assets/images/banner.jpg);">
+            <div class="container">
+                <div class="banner-inner rpt-10">
+                    <h2 class="page-title wow fadeInUp delay-0-2s">Bloqlar</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb wow fadeInUp delay-0-4s">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Ana Səhifə</a></li>
+                            <li class="breadcrumb-item active">Bloqlar</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <img class="circle-one" src="{% static 'assets/images/shapes/circle-one.png' %}" alt="Circle">
+            <img class="circle-two" src="{% static 'assets/images/shapes/circle-two.png' %}" alt="Circle">
+        </section>
+        <!-- Page Banner End -->
+
+
+        <!-- Blog Standard Start -->
+        <section class="blog-standard-area py-130 rpt-95 rpb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="blog-standard-wrap">
+                            {% for blog in blogs %}
+                            <div class="blog-standard-item wow fadeInUp delay-0-2s">
+                                <div class="image">
+                                    <img src="{{ blog.image.url }}" alt="Blog">
+                                    <a href="#"><i class="fas fa-share-alt"></i></a>
+                                </div>
+                                <div class="blog-standard-content">
+                                    <div class="author">
+                                        <img src="{{ blog.author.image.url }}" alt="Author">
+                                    </div>
+                                    <div class="content">
+                                        <ul class="blog-standard-header">
+                                            <li><span class="name">{{ blog.author.get_full_name }}</span></li>
+                                            <li><i class="far fa-calendar-alt"></i> <a href="blog-details.html">{{ blog.published_at }}</a></li>
+                                        </ul>
+                                        <h3><a href="{% url 'blog_detail' blog.slug %}">{{ blog.title }}</a></h3>
+                                        <p>{{ blog.description|truncatechars:100 }}</p>
+                                        <a href="{% url 'blog_detail' blog.slug %}" class="theme-btn style-two">Ətraflı <i class="fas fa-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            {% if is_paginated %}
+                            <ul class="pagination flex-wrap justify-content-center">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i
+                                            class="fas fa-angle-double-left"></i></a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
+                                </li>
+                                {% endif %}
+
+                                {% for page_number in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == page_number %}
+                                    <li class="page-item active">
+                                                    <span class="page-link">
+                                                    {{ page_number }}
+                                                    <span class="sr-only">(current)</span>
+                                                    </span>
+                                    </li>
+                                    {% elif page_number > page_obj.number|add:'-3' and page_number < page_obj.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}"><i
+                                            class="fas fa-angle-double-right"></i></a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
+                                </li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog-sidebar rmt-75">
+                            <div class="widget widget-search wow fadeInUp delay-0-2s">
+                                <form action="#">
+                                    <input type="text" placeholder="Search Here" required>
+                                    <button type="submit" class="searchbutton fa fa-search"></button>
+                                </form>
+                            </div>
+                            <div class="widget widget-about wow fadeInUp delay-0-4s">
+                                <div class="image">
+                                    <img src="assets/images/widgets/about.jpg" alt="Author">
+                                </div>
+                                <h4>James D. Thomas</h4>
+                                <p>Sit amet consectetur adipiscing elits do eiusmod tempor incididunt ut labore etdol magna aliquas uspensis. </p>
+                                <div class="social-style-two">
+                                    <a href="contact.html"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="contact.html"><i class="fab fa-twitter"></i></a>
+                                    <a href="contact.html"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="contact.html"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                            <div class="widget widget-menu wow fadeInUp delay-0-2s">
+                                <h4 class="widget-title">Category</h4>
+                                <ul>
+                                    <li><a href="blog.html">Business Coach </a> <span>(25)</span></li>
+                                    <li><a href="blog.html">Life Coach </a> <span>(07)</span></li>
+                                    <li><a href="blog.html">Health Coach </a> <span>(12)</span></li>
+                                    <li><a href="blog.html">Web Design </a> <span>(55)</span></li>
+                                    <li><a href="blog.html">Web Development </a> <span>(14)</span></li>
+                                    <li><a href="blog.html">SEO Optimizations </a> <span>(30)</span></li>
+                                    <li><a href="blog.html">Digital Analysis </a> <span>(18)</span></li>
+                                </ul>
+                            </div>
+                            <div class="widget widget-recent-courses wow fadeInUp delay-0-2s">
+                                <h4 class="widget-title">Recent Courses</h4>
+                                <ul>
+                                    <li>
+                                        <div class="image">
+                                            <img src="assets/images/widgets/course1.jpg" alt="Course">
+                                        </div>
+                                        <div class="content">
+                                            <h6><a href="course-details.html">How to Learn Basic Web (UI) Design</a></h6>
+                                            <span>By <a href="course-list.html">Williams</a></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="image">
+                                            <img src="assets/images/widgets/course2.jpg" alt="Course">
+                                        </div>
+                                        <div class="content">
+                                            <h6><a href="course-details.html">How to Learn Basic Web Development</a></h6>
+                                            <span>By <a href="course-list.html">Somalia</a></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="image">
+                                            <img src="assets/images/widgets/course3.jpg" alt="Course">
+                                        </div>
+                                        <div class="content">
+                                            <h6><a href="course-details.html">How to Learn Basic (SEO) Marketing </a></h6>
+                                            <span>By <a href="course-list.html">Blanchard</a></span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="image">
+                                            <img src="assets/images/widgets/course4.jpg" alt="Course">
+                                        </div>
+                                        <div class="content">
+                                            <h6><a href="course-details.html">Business Strategy Managements</a></h6>
+                                            <span>By <a href="course-list.html">Johnson</a></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="widget widget-tag-cloud wow fadeInUp delay-0-2s">
+                                <h4 class="widget-title">Popular Tags</h4>
+                                <div class="tag-coulds">
+                                    <a href="blog.html">Course</a>
+                                    <a href="blog.html">Design</a>
+                                    <a href="blog.html">Marketing</a>
+                                    <a href="blog.html">Life Course</a>
+                                    <a href="blog.html">Health Course</a>
+                                    <a href="blog.html">SEO</a>
+                                    <a href="blog.html">Business</a>
+                                    <a href="blog.html">Graphics</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Blog Standard End -->
+{% endblock %}
